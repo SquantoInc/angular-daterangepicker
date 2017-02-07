@@ -131,7 +131,7 @@
         _init = function() {
           var eventType, results;
           el.daterangepicker(angular.extend(opts, {
-            autoUpdateInput: false
+            // autoUpdateInput: false
           }), function(start, end) {
             return $scope.$apply(function() {
               return $scope.model = opts.singleDatePicker ? start : {
