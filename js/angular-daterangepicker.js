@@ -169,6 +169,9 @@
             });
           }
         };
+
+        $scope.$on('show.daterangepicker', () => _picker.show());
+
         _initBoundaryField('min', _validateMin, 'startDate', 'minDate');
         _initBoundaryField('max', _validateMax, 'endDate', 'maxDate');
         if (attrs.options) {
