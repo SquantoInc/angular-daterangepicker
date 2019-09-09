@@ -90,7 +90,7 @@
           };
           if (opts.singleDatePicker && objValue) {
             return f(objValue);
-          } else if (objValue.startDate) {
+          } else if (objValue && objValue.startDate) {
             return [f(objValue.startDate), f(objValue.endDate)].join(opts.locale.separator);
           } else {
             return '';
@@ -130,9 +130,7 @@
         };
         _init = function() {
           var eventType, results;
-          el.daterangepicker(angular.extend(opts, {
-            // autoUpdateInput: false
-          }), function(start, end) {
+          el.daterangepicker(angular.extend(opts, {}), function(start, end) {
             return $scope.$apply(function() {
               return $scope.model = opts.singleDatePicker ? start : {
                 startDate: start,
@@ -169,11 +167,10 @@
             });
           }
         };
-
-        $scope.$on('force.show.daterangepicker', function () {
+        $scope.$on('force.show.daterangepicker', function() {
           _picker.show();
+          return null;
         });
-
         _initBoundaryField('min', _validateMin, 'startDate', 'minDate');
         _initBoundaryField('max', _validateMax, 'endDate', 'maxDate');
         if (attrs.options) {

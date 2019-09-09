@@ -7,7 +7,7 @@ picker.constant('dateRangePickerConfig',
     format: 'YYYY-MM-DD'
 )
 
-picker.directive 'dateRangePicker', ($compile, $timeout, $parse, dateRangePickerConfig) ->
+picker.directive 'dateRangePicker', ($compile, $timeout, $parse, dateRangePickerConfig, moment) ->
   require: 'ngModel'
   restrict: 'A'
   scope:
@@ -72,7 +72,7 @@ picker.directive 'dateRangePicker', ($compile, $timeout, $parse, dateRangePicker
 
       if opts.singleDatePicker and objValue
         f(objValue)
-      else if objValue.startDate
+      else if objValue and objValue.startDate
         [f(objValue.startDate), f(objValue.endDate)].join(opts.locale.separator)
       else ''
 
@@ -112,7 +112,7 @@ picker.directive 'dateRangePicker', ($compile, $timeout, $parse, dateRangePicker
     _init = ->
       # disable autoUpdateInput, can't handle empty values without it.  Our callback here will
       # update our $viewValue, which triggers the $parsers
-      el.daterangepicker angular.extend(opts, {autoUpdateInput: false}), (start, end) ->
+      el.daterangepicker angular.extend(opts, {}), (start, end) ->
         $scope.$apply () ->
           $scope.model = if opts.singleDatePicker then start else {startDate: start, endDate: end}
 
@@ -146,6 +146,10 @@ picker.directive 'dateRangePicker', ($compile, $timeout, $parse, dateRangePicker
           opts[optName] = if date then moment(date) else false
           _init()
 
+    $scope.$on 'force.show.daterangepicker', () ->
+      _picker.show()
+      null
+    
     _initBoundaryField('min', _validateMin, 'startDate', 'minDate')
     _initBoundaryField('max', _validateMax, 'endDate', 'maxDate')
 
